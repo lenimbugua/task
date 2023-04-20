@@ -12,9 +12,9 @@ class StatusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Status $status)
     {
-        //
+        return StatusResource::collection(Status::all());
     }
 
     /**
@@ -32,7 +32,7 @@ class StatusController extends Controller
      */
     public function show(Status $status)
     {
-        //
+        return StatusResource::make($status);
     }
 
     /**
@@ -40,7 +40,7 @@ class StatusController extends Controller
      */
     public function update(UpdateStatusRequest $request, Status $status)
     {
-        $status->update($request->validated($status));
+        $status->update($request->validated());
 
         return StatusResource::make($status);
     }
