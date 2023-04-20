@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_tasks', function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned()->limit(11)->primary();
-            $table->integer('user_id', 11);
-            $table->integer('task_id', 11);
-            $table->timestamp('due_date');
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
-            $table->string('remarks', 100);
-            $table->integer('status_id', 12);
-            $table->timestamp('updated_at');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('task_id');
+            $table->date('due_date');
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
+            $table->text('remarks')->nullable();
+            $table->unsignedBigInteger('status_id');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

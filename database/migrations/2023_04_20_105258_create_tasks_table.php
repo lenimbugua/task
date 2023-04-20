@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned()->limit(11)->primary();
+            $table->id();
             $table->string('name', 100);
             $table->string('description', 255);
             $table->timestamp('due_date');
-            $table->integer('status_id', 12);
+            $table->unsignedBigInteger('status_id');
             $table->timestamp('deleted_at');
             $table->timestamps();
         });

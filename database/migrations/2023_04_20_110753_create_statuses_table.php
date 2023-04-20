@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('statuses', function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned()->limit(11)->primary();
+            $table->id();
             $table->string('name', 50);
             $table->timestamp('deleted_at');
             $table->timestamps();
