@@ -50,6 +50,8 @@ class StatusController extends Controller
      */
     public function destroy(Status $status)
     {
-        //
+        $status->delete();
+
+        return response()->noContent();
     }
 }
