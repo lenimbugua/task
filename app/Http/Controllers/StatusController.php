@@ -23,6 +23,7 @@ class StatusController extends Controller
     public function store(StoreStatusRequest $request)
     {
         $status = Status::create($request->validated());
+
         return StatusResource::make($status);
     }
 
@@ -35,19 +36,13 @@ class StatusController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Status $status)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateStatusRequest $request, Status $status)
     {
-        //
+        $status->update($request->validated($status));
+
+        return StatusResource::make($status);
     }
 
     /**
