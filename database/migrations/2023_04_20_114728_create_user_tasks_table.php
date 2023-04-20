@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('user_tasks', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned()->limit(11)->primary();
-            $table->string('name', 100);
-            $table->string('description', 255);
+            $table->integer('user_id', 11);
+            $table->integer('task_id', 11);
             $table->timestamp('due_date');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
+            $table->string('remarks', 100);
             $table->integer('status_id', 12);
-            $table->timestamp('deleted_at');
+            $table->timestamp('updated_at');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('user_tasks');
     }
 };
