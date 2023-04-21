@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class User extends Authenticatable
@@ -49,8 +49,8 @@ class User extends Authenticatable
     /**
      * Get all tasks for the user.
      */
-    public function tasks(): HasManyThrough
+    public function tasks(): HasMany
     {
-        return $this->hasManyThrough(Task::class, UserTask::class);
+        return $this->hasMany( UserTask::class);
     }
 }
