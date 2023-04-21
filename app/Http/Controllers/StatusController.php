@@ -14,7 +14,9 @@ class StatusController extends Controller
      */
     public function index(Status $status)
     {
-        return StatusResource::collection(Status::all());
+        $statuses = Status::whereNull('deleted_at')->get();
+
+        return StatusResource::collection($statuses);
     }
 
     /**
@@ -48,10 +50,15 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Status $status)
+    public function destroy($id)
     {
-        $status->delete();
+        $status = Status::find($id);
 
-        return response()->noContent();
+        if (!$status || !$status->exists()) {
+            return response()->json(['message' => 'Status not found'], 404);
+        }
+        $status->forceFill(['deleted_at' => now()])->save();
+
+        return response()->json(['message' => 'Status soft-deleted', 'deleted_at' => $status->deleted_at], 200);
     }
 }

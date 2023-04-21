@@ -21,12 +21,16 @@ class TaskResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'due_date' => $this->due_date,
+            'deleted_at' => $this->deleted_at,
 
             'relationships' => [
-                'status_id' => $this->status->id,
-                'name' => $this->status->name,
-                'created_at' => $this->status->created_at,
-                'updated_at' => $this->status->updated_at,
+                "status" => [
+                    'id' => $this->status->id,
+                    'name' => $this->status->name,
+                    'created_at' => $this->status->created_at,
+                    'updated_at' => $this->status->updated_at,
+                    'deleted_at' => $this->status->deleted_at,
+                ]
             ]
         ];
     }

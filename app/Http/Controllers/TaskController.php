@@ -16,7 +16,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(Task::all());
+        $task = Task::whereNull('deleted_at')->get();
+
+        return TaskResource::collection($task);
     }
 
     /**
@@ -66,10 +68,15 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        $task->delete();
+        $task = Status::find($id);
 
-        return response()->noContent();
+        if (!$task || !$task->exists()) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
+        $task->forceFill(['deleted_at' => now()])->save();
+
+        return response()->json(['message' => 'Task soft-deleted', 'deleted_at' => $task->deleted_at], 200);
     }
 }
