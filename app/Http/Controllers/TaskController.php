@@ -28,7 +28,7 @@ class TaskController extends Controller
         $status = Status::find($request->status_id);
 
         if (!$status) {
-            response()->isNotFound();
+            return response()->json(['message' => 'Status not found'], 404);
         }
 
         // Associate the task with status
@@ -50,7 +50,17 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        // Get the status to which the task belongs
+        $status = Status::find($request->status_id);
+
+        if (!$status) {
+            return response()->json(['message' => 'Status not found'], 404);
+        }
+
+        $task->status()->associate($status); // Update the foreign key on the task model
+        $task->update($request->validated());
+
+        return TaskResource::make($task);
     }
 
     /**
