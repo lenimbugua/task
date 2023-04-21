@@ -22,7 +22,13 @@ class StoreUserTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required|integer|exists:users,id',
+            'task_id' => 'required|integer|exists:tasks,id',
+            'due_date' => 'required|date|after:now',
+            'start_time' => 'date_format:Y-m-d H:i:s',
+            'end_time' => 'date_format:Y-m-d H:i:s|after:start_date',
+            'remarks' => 'required|string|max:100',
+            'status_id' => 'required|integer|exists:statuses,id',
         ];
     }
 }
