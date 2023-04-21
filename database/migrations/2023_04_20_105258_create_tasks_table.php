@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description', 255);
             $table->timestamp('due_date');
             $table->unsignedBigInteger('status_id');
-            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

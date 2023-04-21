@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::prefix('v1')->group(function () {
 // Protected routes
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/status', StatusController::class);
+    Route::apiResource('/task', TaskController::class);
 
     Route::apiResource('/users', UserController::class);
 

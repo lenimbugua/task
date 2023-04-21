@@ -13,6 +13,18 @@ class Task extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'due_date',
+        'status_id'
+    ];
+
+    /**
      * Get the user-tasks for the task.
      */
     public function usertasks(): HasMany
