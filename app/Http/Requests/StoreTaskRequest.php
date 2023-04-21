@@ -25,7 +25,7 @@ class StoreTaskRequest extends FormRequest
             'name' => 'required|string|max:100',
             'description' => 'required|string|max:255',
             'due_date' => 'required|string',
-            'status_id' => 'required',
+            'status_id' => 'required|integer|exists:statuses,id',
         ];
     }
 }

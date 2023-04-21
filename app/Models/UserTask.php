@@ -11,6 +11,16 @@ class UserTask extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'task_id',
+        'due_date',
+        'start_time',
+        'end_time',
+        'remarks',
+        'status_id',
+    ];
+
     /**
      * Get the user that owns the user-task.
      */
