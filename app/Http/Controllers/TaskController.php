@@ -70,7 +70,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $task = Status::find($id);
+        $task = Task::find($id);
 
         if (!$task || !$task->exists()) {
             return response()->json(['message' => 'Task not found'], 404);
