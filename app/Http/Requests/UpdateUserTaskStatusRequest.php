@@ -22,8 +22,8 @@ class UpdateUserTaskStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_task_id' => 'required|integer|exists:tasks,id',
-            'status_id' => 'required|integer|exists:statuses,id',
+            'user_task_id' => 'required|integer|exists:user_tasks,id',
+            'remarks' => 'string|max:100',
         ];
     }
 }

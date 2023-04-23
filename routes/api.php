@@ -36,11 +36,14 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('/status', StatusController::class);
     Route::apiResource('/task', TaskController::class);
+    Route::apiResource('/users', UserController::class);
 
     Route::post('/user-task', [UserTaskController::class, 'store']);
     Route::put('/user-task/update/{id}', [UserTaskController::class, 'update']);
-    Route::put('/user-task/update-status', [UserTaskController::class, 'updateTaskStatus']);
+    Route::put('/user-task/start', [UserTaskController::class, 'startTask']);
+    Route::put('/user-task/end', [UserTaskController::class, 'endTask']);
     Route::get('/user-task/{user_id}', [UserTaskController::class, 'listUserTasks']);
+    Route::delete('/user-task/{id}', [UserTaskController::class, 'destroy']);
 
     Route::get('/count-user-tasks', [StatsController::class, 'countUserTasks']);
     Route::get('/count-users', [StatsController::class, 'countUsers']);
@@ -49,7 +52,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/count-expired-user-tasks/', [StatsController::class, 'countExpiredUserTasks']);
     Route::get('/count-expired-user-tasks-days/{days}', [StatsController::class, 'countPastExpiredUserTasks']);
 
-    Route::apiResource('/users', UserController::class);
 
 
 

@@ -19,7 +19,9 @@ class UserTaskController extends Controller
      */
     public function index($user_id)
     {
-        $userTasks = UserTask::where('user_id', $user_id)->get();
+        $userTasks = UserTask::where('user_id', $user_id)
+            ->whereNull('deleted_at')
+            ->get();
         return UserTaskResource::collection($userTasks);
     }
 
@@ -28,7 +30,9 @@ class UserTaskController extends Controller
      */
     public function listUserTasks($user_id)
     {
-        $userTasks = UserTask::where('user_id', $user_id)->get();
+        $userTasks = UserTask::where('user_id', $user_id)
+            ->whereNull('deleted_at')
+            ->get();
         return UserTaskResource::collection($userTasks);
     }
 
@@ -67,14 +71,14 @@ class UserTaskController extends Controller
     {
         $userTask->update($request->validated());
 
-        return UserTaskResource::make($userTask);
+        return response()->json(['message' => 'Task status updated'], 200);
     }
 
     /**
-     * Update status of user-task.
+     * Update start time of user-task.
      */
 
-    public function updateTaskStatus(UpdateUserTaskStatusRequest $request)
+    public function startTask(UpdateUserTaskStatusRequest $request)
     {
         $userTask = UserTask::find($request->user_task_id);
 
@@ -83,36 +87,51 @@ class UserTaskController extends Controller
             return response()->json(['message' => 'Task not found'], 404);
         }
 
-        $status = Status::find($request->status_id);
+        // Update the task start time
+        $userTask->start_time = Carbon::now();
+        $userTask->save();
+
+
+
+        return response()->json(['message' => 'Task started successfully'], 200);
+    }
+
+    /**
+     * Update user-task end time of user-task.
+     */
+
+    public function endTask(UpdateUserTaskStatusRequest $request)
+    {
+        $userTask = UserTask::find($request->user_task_id);
 
         // Check if the task exists
-        if (!$status) {
-            return response()->json(['message' => 'Status not found'], 404);
+        if (!$userTask) {
+            return response()->json(['message' => 'Task not found'], 404);
         }
 
-        // Check if the task is expired
-        if (Carbon::parse($userTask->due_date)->isPast()) {
-            return response()->json(['message' => 'Task expired'], 400);
-        }
-
-        // Update the task status
-        $userTask->status_id = $request->status_id;
+        // Update the task start time and remarks
+        $userTask->end_time = Carbon::now();
+        $userTask->remarks = $request->remarks;
         $userTask->save();
 
-        // Associate the status record with the updated task record
-        $status = Status::find($request->status_id);
-        $userTask->status()->associate($status);
-        $userTask->save();
 
-        return response()->json(['message' => 'Task status updated'], 200);
+
+        return response()->json(['message' => 'Task ended successfully'], 200);
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserTask $userTask)
+    public function destroy($id)
     {
-        //
+        $userTask = UserTask::find($id);
+
+        if (!$userTask || !$userTask->exists()) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
+        $userTask->forceFill(['deleted_at' => now()])->save();
+
+        return response()->json(['message' => 'Task soft-deleted', 'deleted_at' => $userTask->deleted_at], 200);
     }
 }
