@@ -24,6 +24,11 @@ class StatusController extends Controller
      */
     public function store(StoreStatusRequest $request)
     {
+        $status = Status::where('name', $request->name);
+
+        if ($status->exists()) {
+            return response()->json(['message' => 'Already exists'], 403);
+        }
         $status = Status::create($request->validated());
 
         return StatusResource::make($status);

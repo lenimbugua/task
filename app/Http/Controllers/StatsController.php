@@ -28,11 +28,11 @@ class StatsController extends Controller
         return response()->json(['count' => $totalCount]);
     }
 
-    //count status user-task
+    //count  user-task for each status
     public function countStatus($status)
     {
-        $totalCount = UserTask::whereHas('status', function ($query) {
-            $query->where('name', 'started');
+        $totalCount = UserTask::whereHas('status', function ($query) use ($status) {
+            $query->where('name',  $status);
         })->count();
         return response()->json(['count' => $totalCount]);
     }
@@ -43,7 +43,7 @@ class StatsController extends Controller
         $now = Carbon::now();
         $count = UserTask::where('due_date', '<', $now)
             ->whereHas('status', function ($query) {
-                $query->where('name', '<>', 'completed');
+                $query->where('name', '<>', 'done');
             })->count();
 
         return response()->json(['count' => $count]);
